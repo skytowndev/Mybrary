@@ -1,11 +1,17 @@
 const express = require('express')
 const router = express.Router()
+const Book = require('../models/book')
 
 
-router.get('/', (req,res)=> {
-
+router.get('/', async (req,res)=> {
+    let books
+    try {
+        books = await Book.find().sort({createAt: 'desc'}).limit(10).exec()
+    } catch {
+        books = []
+    }
     //res.send('Hello world.')
-    res.render('index')
+    res.render('index', {books: books})
 
 })
 
